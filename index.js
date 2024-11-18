@@ -67,15 +67,14 @@ app.get('/api/khoBTP', async (req, res) => {
 
 app.get('/api/khoBTP/search', async (req, res) => {
   const So_LenhXUATVT = req.query.So_LenhXUATVT;
-  const ID_Kho = parseInt(req.query.ID_Kho);
-  const MaVung = req.query.MaVung;
+  const Ma_Vattu = req.query.Ma_Vattu;
   try {
     let pool = await sql.connect(config);
 
     // Gọi stored procedure với 3 tham số
     let result = await pool.request()
-      .input('So_LenhXUATVT', sql.VarChar, 'LXVT-2024-10-0288')
-      .input('Ma_Vattu', sql.VarChar, '')
+      .input('So_LenhXUATVT', sql.VarChar, So_LenhXUATVT)
+      .input('Ma_Vattu', sql.VarChar, Ma_Vattu)
       .execute('BaoCao_ViTriVatTu'); // Tên stored procedure của bạn
 
     // Trả về dữ liệu JSON cho frontend
