@@ -1,21 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const sql = require('mssql');
-const { connect } = require("./db.js");
+require('dotenv').config();
+// const { connect } = require("./db.js");
 // Khởi tạo ứng dụng Express
 const app = express();
 app.use(cors()); // Cho phép ReactJS giao tiếp với backend
 
 // Cấu hình kết nối với SQL Server
 const config = {
-  server: "LUNA",
-  database: "TAG_QTKD",
-  user: "duy",
-  password: "Bichphuong0",
+  server: process.env.DB_SERVER,
+  database: process.env.DB_DATABASE,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
   options: {
-    trustedConnection: true,
-    enableArithAbort: true,
-    trustServerCertificate: true,
+    trustedConnection: process.env.DB_TRUSTED_CONNECTION === 'true',
+    enableArithAbort: process.env.DB_ENABLE_ARITHABORT === 'true',
+    trustServerCertificate: process.env.DB_TRUST_SERVER_CERTIFICATE === 'true',
   },
 };
 
@@ -55,7 +56,7 @@ app.get('/api/khoBTP', async (req, res) => {
       .input('TenNha', sql.VarChar, TenNha)
       .input('Id_kho', sql.Int, ID_Kho)
       .input('MaVung', sql.VarChar, MaVung)
-      .execute('BaoCao_Ton_Layoutkho_BTP'); // Tên stored procedure của bạn
+      .execute('BaoCao_Ton_Layoutkho_BTP__'); // Tên stored procedure của bạn
 
     // Trả về dữ liệu JSON cho frontend
     res.json(result.recordset);
@@ -66,17 +67,17 @@ app.get('/api/khoBTP', async (req, res) => {
 });
 
 app.get('/api/khoBTP/search', async (req, res) => {
-  const So_LenhXUATVT = req.query.So_LenhXUATVT;
-  const Ma_Vattu = req.query.Ma_Vattu;
+  const So_LenhXuatBTP = req.query.So_LenhXuatBTP;
+  const Itemcode = req.query.Itemcode;
   try {
     let pool = await sql.connect(config);
 
     // Gọi stored procedure với 3 tham số
     let result = await pool.request()
-      .input('So_LenhXUATVT', sql.VarChar, So_LenhXUATVT)
-      .input('Ma_Vattu', sql.VarChar, Ma_Vattu)
-      .execute('BaoCao_ViTriVatTu'); // Tên stored procedure của bạn
-
+      .input('So_LenhXuatBTP', sql.VarChar, So_LenhXuatBTP)
+      .input('Itemcode', sql.VarChar, Itemcode)
+      .execute('BaoCao_ViTriVatTu_BTP_FindbyLenhXuatBTP__'); // Tên stored procedure của bạn
+    //LXBTP-2023-10-1879
     // Trả về dữ liệu JSON cho frontend
     res.json(result.recordset);
   } catch (err) {
