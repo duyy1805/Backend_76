@@ -6,7 +6,7 @@ require('dotenv').config();
 // Khởi tạo ứng dụng Express
 const app = express();
 app.use(cors()); // Cho phép ReactJS giao tiếp với backend
-
+app.use(express.json()); // Middleware để parse JSON
 // Cấu hình kết nối với SQL Server
 const config = {
   server: process.env.DB_SERVER,
@@ -44,21 +44,18 @@ app.get('/api/kho', async (req, res) => {
   }
 });
 
-app.get('/api/khoBTP', async (req, res) => {
-  const TenNha = req.query.TenNha;
-  const ID_Kho = parseInt(req.query.ID_Kho);
-  const MaVung = req.query.MaVung;
+app.post('/layoutkho/btp', async (req, res) => {
+  const { tenNha, idKho, maVung } = req.body; // Lấy dữ liệu từ body
   try {
     let pool = await sql.connect(config);
 
-
     let result = await pool.request()
-      .input('TenNha', sql.VarChar, TenNha)
-      .input('Id_kho', sql.Int, ID_Kho)
-      .input('MaVung', sql.VarChar, MaVung)
-      .execute('BaoCao_Ton_Layoutkho_BTP__'); // 
-    // Trả về dữ liệu JSON cho frontend
-    res.json(result.recordset);
+      .input('TenNha', sql.VarChar, tenNha)
+      .input('ID_Kho', sql.Int, idKho)
+      .input('MaVung', sql.VarChar, maVung)
+      .execute('BaoCao_Ton_Layoutkho_BTP__');
+
+    res.json(result.recordset); // Trả kết quả về cho frontend
   } catch (err) {
     console.error(err);
     res.status(500).send('Có lỗi xảy ra khi kết nối với cơ sở dữ liệu.');
