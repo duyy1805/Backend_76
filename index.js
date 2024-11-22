@@ -34,7 +34,7 @@ app.get('/api/kho', async (req, res) => {
       .input('TenNha', sql.VarChar, TenNha)
       .input('Id_kho', sql.Int, ID_Kho)
       .input('MaVung', sql.VarChar, MaVung)
-      .execute('BaoCao_Ton_LayoutKHo'); // Tên stored procedure của bạn
+      .execute('BaoCao_Ton_LayoutKHo'); // 
 
     // Trả về dữ liệu JSON cho frontend
     res.json(result.recordset);
@@ -51,13 +51,12 @@ app.get('/api/khoBTP', async (req, res) => {
   try {
     let pool = await sql.connect(config);
 
-    // Gọi stored procedure với 3 tham số
+
     let result = await pool.request()
       .input('TenNha', sql.VarChar, TenNha)
       .input('Id_kho', sql.Int, ID_Kho)
       .input('MaVung', sql.VarChar, MaVung)
-      .execute('BaoCao_Ton_Layoutkho_BTP__'); // Tên stored procedure của bạn
-
+      .execute('BaoCao_Ton_Layoutkho_BTP__'); // 
     // Trả về dữ liệu JSON cho frontend
     res.json(result.recordset);
   } catch (err) {
@@ -72,13 +71,13 @@ app.get('/api/khoBTP/search', async (req, res) => {
   try {
     let pool = await sql.connect(config);
 
-    // Gọi stored procedure với 3 tham số
+
     let result = await pool.request()
       .input('So_LenhXuatBTP', sql.VarChar, So_LenhXuatBTP)
       .input('Itemcode', sql.VarChar, Itemcode)
-      .execute('BaoCao_ViTriVatTu_BTP_FindbyLenhXuatBTP__'); // Tên stored procedure của bạn
+      .execute('BaoCao_ViTriVatTu_BTP_FindbyLenhXuatBTP__'); // \
     //LXBTP-2023-10-1879
-    // Trả về dữ liệu JSON cho frontend
+
     res.json(result.recordset);
   } catch (err) {
     console.error(err);
@@ -99,9 +98,9 @@ app.get('/api/kho2', async (req, res) => {
       .input('tenNha', sql.VarChar, "Kho N1")
       .input('Mavitrikho', sql.VarChar, "A111")
       .input('MaVung', sql.VarChar, 'A')
-      .execute('BaoCao_TonViTri'); // Tên stored procedure của bạn
+      .execute('BaoCao_TonViTri'); //
 
-    // Trả về dữ liệu JSON cho frontend
+
     res.json(result.recordset);
   } catch (err) {
     console.error(err);
@@ -111,7 +110,7 @@ app.get('/api/kho2', async (req, res) => {
 app.get('', async (req, res) => {
   return res.json("hello")
 });
-// Cấu hình server lắng nghe cổng
+
 app.listen(5000, () => {
   console.log('Server đang chạy trên cổng 5000');
 });
