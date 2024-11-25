@@ -62,16 +62,17 @@ app.post('/layoutkho/btp', async (req, res) => {
   }
 });
 
-app.get('/api/khoBTP/search', async (req, res) => {
-  const So_LenhXuatBTP = req.query.So_LenhXuatBTP;
-  const Itemcode = req.query.Itemcode;
+app.post('/layoutkho/bylenhxuatbtp', async (req, res) => {
+  // const So_LenhXuatBTP = req.query.soLenhXuatBTP;
+  // const Itemcode = req.query.itemCode;
+  console.log(req.body)
+  const { soLenhXuatBTP, itemCode } = req.body;
   try {
     let pool = await sql.connect(config);
 
-
     let result = await pool.request()
-      .input('So_LenhXuatBTP', sql.VarChar, So_LenhXuatBTP)
-      .input('Itemcode', sql.VarChar, Itemcode)
+      .input('So_LenhXuatBTP', sql.VarChar, soLenhXuatBTP)
+      .input('Itemcode', sql.VarChar, itemCode)
       .execute('BaoCao_ViTriVatTu_BTP_FindbyLenhXuatBTP__'); // \
     //LXBTP-2023-10-1879
 
